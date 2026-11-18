@@ -27,7 +27,7 @@ export async function searchBooks(query) {
         console.log('Request URL:', url);
 
         const response = await fetch(
-            `${API_URL}?q=${encodeURIComponent(query.trim())}&maxResults=20&key=${API_KEY}`
+            `${API_URL}?q=${encodeURIComponent(query.trim())}&maxResults=20&langRestrict=en&key=${API_KEY}`
         );
 
 
@@ -42,9 +42,10 @@ export async function searchBooks(query) {
             throw new Error(JSON.stringify(data));
         }
 
-        return (data.items || []).map(formatBook);
+        return (data.items || [])
+            .filter(book => book.volumeInfo?.language === 'en')
+            .map(formatBook);
 
-        
     } catch (error) {
         console.error('Actual API error:', error.message);
         throw error;
