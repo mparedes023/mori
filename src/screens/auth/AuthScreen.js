@@ -6,9 +6,13 @@ export default function AuthScreen({ navigation }) {
 
 
 // will add actual handleSignIn logic later
-  const handleSignIn = () => {
-    navigation.replace('Main');
-  };
+    const handleSignIn = () => {
+        navigation.replace('Main');
+    };
+
+    const handleAccountCreation = () => {
+        navigation.replace('AccountCreation');
+    };
 
   return (
 
@@ -26,6 +30,13 @@ export default function AuthScreen({ navigation }) {
         >
         </TextInput>
         <TouchableOpacity style={styles.authButton}  onPress={handleSignIn}><Text style={styles.authButtonText}>LOGIN</Text></TouchableOpacity>
+        <View style={styles.boxAuth}>
+          <Text style={styles.footerText}>Don’t have an account? | </Text>
+          <TouchableOpacity onPress={handleAccountCreation}>
+            <Text style={styles.createAccountText}>CREATE ACCOUNT</Text>
+          </TouchableOpacity>
+        </View>
+
     </View>
   );
 }
@@ -82,4 +93,19 @@ marginBottom:20,
     fontFamily:theme.fonts.regular,
     fontSize:15,
   },
+  boxAuth: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 30,
+  },
+  footerText: {
+    fontFamily: theme.fonts.regular,
+    fontSize: 12,
+  },
+  createAccountText: {
+    fontFamily: theme.fonts.bold,
+    fontSize: 12,
+    textDecorationLine: 'underline',
+  },
+
 });

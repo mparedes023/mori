@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { View, StyleSheet,SafeAreaView} from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MoriHeader from './src/components/MoriHeader';
-
+import AccountCreationScreen from './src/screens/auth/AccountCreationScreen';
 import AuthScreen from './src/screens/auth/AuthScreen';
 import TabNavigator from './src/navigation/TabNavigator';
 import {
@@ -32,7 +32,8 @@ export default function App() {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Auth" component={AuthScreen} />
           <Stack.Screen name="Main" component={TabNavigator} />
-        
+          <Stack.Screen name="AccountCreation" component={AccountCreationScreen} />
+
         </Stack.Navigator>          
         <View style={styles.headerWrapper} pointerEvents="box-none">
           <MoriHeader />
