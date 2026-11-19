@@ -1,7 +1,6 @@
-
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import HomeScreen from '../screens/home/HomeScreen';
+import HomeStackNavigator from './HomeStackNavigator';
 import SearchScreen from '../screens/search/SearchScreen';
 import MysteryMatchScreen from '../screens/home/MysteryMatchScreen';
 
@@ -27,7 +26,7 @@ export default function TabNavigator() {
     >
       <Tab.Screen
         name="Home"
-        component={HomeScreen}
+        component={HomeStackNavigator}
       />
 
       <Tab.Screen
