@@ -20,7 +20,7 @@ export default function AccountCreationScreen({navigation}){
             secureTextEntry
         >
         </TextInput>
-        <TouchableOpacity style={styles.authButton}  onPress={handleAccountCreation}><Text style={styles.authButtonText}>LOGIN</Text></TouchableOpacity>
+        <TouchableOpacity style={styles.authButton}  onPress={handleAccountCreation}><Text style={styles.authButtonText}>CREATE ACCOUNT</Text></TouchableOpacity>
         <View style={styles.boxAuth}>
           <Text style={styles.footerText}>Already have an account? | </Text>
           <TouchableOpacity onPress={handleAccountCreation}>
