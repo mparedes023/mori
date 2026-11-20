@@ -5,12 +5,25 @@ import {
   TextInput,
   Pressable,
   StyleSheet,
-  ActivityIndicator
+  ActivityIndicator,
+  ScrollView
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { theme } from '../../constants/theme';
 
 const MAROON = '#572D35';
+
+const genres = [
+  'Fiction',
+  'Science Fiction',
+  'Romance',
+  'Mystery',
+  'Fantasy',
+  'Thriller',
+  'Horror',
+  'Historical Fiction',
+  'Biography',
+];
 
 export default function SearchScreen() {
   const [search, setSearch] = useState('');
@@ -20,6 +33,15 @@ export default function SearchScreen() {
   const [error, setError] = useState('');
 
   const requestNumber = useRef(0);
+
+  const [selectedGenre, setSelectedGenre] = useState('');
+  const [genreWidth, setGenreWidth] = useState(0);
+  const [genreContentWidth, setGenreContentWidth] = useState(0);
+  const [genreOffset, setGenreOffset] = useState(0);
+
+  const canScrollGenres =
+    genreWidth > 0 &&
+    genreContentWidth > genreWidth + genreOffset + 5;
 
   const formatBook = (item) => {
     const info = item.volumeInfo || {};
@@ -105,6 +127,22 @@ export default function SearchScreen() {
     }
   };
 
+  const handleGenre = (genre) => {
+    const newGenre = selectedGenre === genre ? '' : genre;
+
+    setSelectedGenre(newGenre);
+
+    if (newGenre) {
+      const query = search.trim()
+        ? `${search.trim()} subject:"${newGenre}"`
+        : `subject:"${newGenre}"`;
+
+      searchBooks(query);
+    } else {
+      searchBooks(search.trim() || 'subject:fiction');
+    }
+  };
+
   // Load fiction books when the screen opens //
   useEffect(() => {
     searchBooks('subject:fiction');
@@ -131,7 +169,13 @@ export default function SearchScreen() {
           placeholderTextColor="#8D6470"
           value={search}
           onChangeText={setSearch}
-          onSubmitEditing={() => searchBooks(search)}
+          onSubmitEditing={() => {
+            const query = selectedGenre
+              ? `${search.trim()} subject:"${selectedGenre}"`
+              : search.trim() || 'subject:fiction';
+
+            searchBooks(query);
+          }}
           returnKeyType="search"
         />
 
@@ -141,6 +185,77 @@ export default function SearchScreen() {
           </Pressable>
         )}
       </View>
+
+
+      <View style={styles.section}>
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>
+            Browse by Genre
+          </Text>
+
+          {canScrollGenres && (
+            <View style={styles.swipeHint}>
+              <Text style={styles.swipeText}>
+                Swipe to explore
+              </Text>
+              <Feather
+                name="arrow-right"
+                size={15}
+                color="#8D6470"
+              />
+            </View>
+          )}
+        </View>
+
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          onLayout={(event) =>
+            setGenreWidth(event.nativeEvent.layout.width)
+          }
+          onContentSizeChange={(width) =>
+            setGenreContentWidth(width)
+          }
+          onScroll={(event) =>
+            setGenreOffset(event.nativeEvent.contentOffset.x)
+          }
+          scrollEventThrottle={16}
+        >
+          {genres.map((genre) => (
+            <Pressable
+              key={genre}
+              style={[
+                styles.genreButton,
+                selectedGenre === genre && styles.selectedGenre,
+              ]}
+              onPress={() => handleGenre(genre)}
+            >
+              <Feather
+                name={
+                  genre === 'Romance'
+                    ? 'heart'
+                    : genre === 'Mystery'
+                      ? 'search'
+                      : genre === 'Fantasy'
+                        ? 'star'
+                        : genre === 'Horror'
+                          ? 'moon'
+                          : genre === 'Thriller'
+                            ? 'zap'
+                            : 'book-open'
+                }
+                size={22}
+                color={MAROON}
+              />
+
+              <Text style={styles.genreText}>
+                {genre}
+              </Text>
+            </Pressable>
+          ))}
+        </ScrollView>
+      </View>
+
 
       <Text style={styles.resultsTitle}>Interesting Read</Text>
 
@@ -218,5 +333,59 @@ const styles = StyleSheet.create({
     color: MAROON,
     textAlign: 'center',
     marginTop: 20,
+  },
+
+  section: {
+    marginTop: 25,
+    marginBottom: 10,
+  },
+
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+
+  sectionTitle: {
+    fontFamily: theme.fonts.bold,
+    fontSize: 18,
+    color: MAROON,
+  },
+
+  swipeHint: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+  },
+
+  swipeText: {
+    fontFamily: theme.fonts.regular,
+    fontSize: 10,
+    color: '#8D6470',
+  },
+
+  genreButton: {
+    backgroundColor: '#EED7D7',
+    width: 95,
+    height: 85,
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+    padding: 5,
+  },
+
+  selectedGenre: {
+    borderWidth: 2,
+    borderColor: MAROON,
+  },
+
+  genreText: {
+    fontFamily: theme.fonts.medium,
+    fontSize: 10,
+    color: MAROON,
+    marginTop: 10,
+    textAlign: 'center',
   },
 });
