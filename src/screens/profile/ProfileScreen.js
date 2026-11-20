@@ -3,6 +3,7 @@ import { theme } from '../../constants/theme';
 
 export default function ProfileScreen() {
   return (
+    
       <ScrollView 
       style={styles.screen} 
       contentContainerStyle={styles.container}
@@ -58,7 +59,13 @@ export default function ProfileScreen() {
 
           </View>
         </View>
-      
+        <View style={styles.dashedLine} />
+        <Text style={styles.genre}>FAVOURITE GENRE: SCI-FI</Text>
+        <Text style={styles.currentRead}>CURRENTLY READING: THE LOST SYMBOL</Text>
+        <View style={styles.dashedLine} />
+        <View style={styles.viewContainer}>
+          <TouchableOpacity style={styles.viewLibrariesButton} ><Text style={styles.viewLibrariesText}>VIEW MY LIBRARIES →</Text></TouchableOpacity>
+        </View>
       </View>
     
 
@@ -67,8 +74,33 @@ export default function ProfileScreen() {
 }
 
 const styles=StyleSheet.create({
+  viewContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    paddingHorizontal: 15,
+    paddingBottom: 15,
+  },
+  viewLibrariesButton: {
+    paddingVertical: 10,
+  },
+  viewLibrariesText: {
+    fontFamily: theme.fonts.bold,
+    fontSize:19,
+    textDecorationLine: 'underline',
+  },
+  genre:{
+    paddingLeft:15,
+    paddingTop:15
+
+  },
+  currentRead:{
+    paddingLeft:15,
+    paddingVertical:15
+
+  },
   receiptBox:{
     display:'flex',
+    backgroundColor:'rgba(198, 202, 207, 0.39)',
     flexDirection:'row',
     justifyContent:'space-between',
     paddingHorizontal:15,
@@ -81,9 +113,11 @@ const styles=StyleSheet.create({
   },
 
   readingStatNumber:{
-    fontSize:18,
+    fontSize:23,
     lineHeight:45,
     textAlign:'right',
+    fontFamily:theme.fonts.bold,
+
   },
   contentContainer:{
     display:'flex',
@@ -110,6 +144,8 @@ const styles=StyleSheet.create({
     borderWidth:1,
     paddingTop:50,
     paddingHorizontal:5,
+    backgroundColor:'rgba(220, 224, 228, 0.39)',
+
   },
     receiptHeaderTitle:{
 textAlign:'center',
