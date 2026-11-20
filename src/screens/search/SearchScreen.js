@@ -39,6 +39,17 @@ export default function SearchScreen() {
   const [genreContentWidth, setGenreContentWidth] = useState(0);
   const [genreOffset, setGenreOffset] = useState(0);
 
+  const [recentSearches, setRecentSearches] = useState([]);
+  const [recentWidth, setRecentWidth] = useState(0);
+  const [recentContentWidth, setRecentContentWidth] = useState(0);
+  const [recentOffset, setRecentOffset] = useState(0);
+
+  const recentScrollRef = useRef(null);
+
+  const canScrollRecent =
+    recentWidth > 0 &&
+    recentContentWidth > recentWidth + recentOffset + 5;
+
   const canScrollGenres =
     genreWidth > 0 &&
     genreContentWidth > genreWidth + genreOffset + 5;
@@ -64,6 +75,48 @@ export default function SearchScreen() {
       ratingsCount: info.ratingsCount ?? 0,
       pagesRead: 0,
     };
+  };
+
+  const saveRecentSearch = (term) => {
+    if (!term.trim()) return;
+
+    setRecentSearches((previous) =>
+      [
+        term.trim(),
+        ...previous.filter(
+          (item) =>
+            item.toLowerCase() !== term.trim().toLowerCase()
+        ),
+      ].slice(0, 5)
+    );
+
+    recentScrollRef.current?.scrollTo({
+      x: 0,
+      animated: false,
+    });
+  };
+
+  const handleRecentSearch = (item) => {
+    setSearch(item);
+    saveRecentSearch(item);
+
+    const query = selectedGenre
+      ? `${item} subject:"${selectedGenre}"`
+      : item;
+
+    searchBooks(query);
+  };
+
+  const removeRecentSearch = (item) => {
+    setRecentSearches((previous) =>
+      previous.filter((searchItem) => searchItem !== item)
+    );
+  };
+
+  const clearRecentSearches = () => {
+    setRecentSearches([]);
+    setRecentOffset(0);
+    setRecentContentWidth(0);
   };
 
   // Retrieve books from Google Books //
@@ -170,6 +223,10 @@ export default function SearchScreen() {
           value={search}
           onChangeText={setSearch}
           onSubmitEditing={() => {
+            if (search.trim()) {
+              saveRecentSearch(search);
+            }
+
             const query = selectedGenre
               ? `${search.trim()} subject:"${selectedGenre}"`
               : search.trim() || 'subject:fiction';
@@ -186,6 +243,81 @@ export default function SearchScreen() {
         )}
       </View>
 
+
+      {recentSearches.length > 0 && (
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>
+              Recent Searches
+            </Text>
+
+            <View style={styles.recentActions}>
+              {canScrollRecent && (
+                <View style={styles.swipeHint}>
+                  <Text style={styles.swipeText}>Swipe</Text>
+                  <Feather
+                    name="arrow-right"
+                    size={14}
+                    color="#8D6470"
+                  />
+                </View>
+              )}
+
+              <Pressable onPress={clearRecentSearches}>
+                <Text style={styles.clearText}>Clear</Text>
+              </Pressable>
+            </View>
+          </View>
+
+          <ScrollView
+            ref={recentScrollRef}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
+            onLayout={(event) =>
+              setRecentWidth(event.nativeEvent.layout.width)
+            }
+            onContentSizeChange={(width) =>
+              setRecentContentWidth(width)
+            }
+            onScroll={(event) =>
+              setRecentOffset(event.nativeEvent.contentOffset.x)
+            }
+            scrollEventThrottle={16}
+          >
+            {recentSearches.map((item) => (
+              <View key={item} style={styles.recentChip}>
+                <Pressable
+                  style={styles.recentTextArea}
+                  onPress={() => handleRecentSearch(item)}
+                >
+                  <Feather
+                    name="clock"
+                    size={14}
+                    color={MAROON}
+                  />
+
+                  <Text style={styles.chipText}>
+                    {item}
+                  </Text>
+                </Pressable>
+
+                <Pressable
+                  onPress={() => removeRecentSearch(item)}
+                  style={styles.removeButton}
+                  hitSlop={8}
+                >
+                  <Feather
+                    name="x"
+                    size={15}
+                    color={MAROON}
+                  />
+                </Pressable>
+              </View>
+            ))}
+          </ScrollView>
+        </View>
+      )}
 
       <View style={styles.section}>
         <View style={styles.sectionHeader}>
@@ -387,5 +519,47 @@ const styles = StyleSheet.create({
     color: MAROON,
     marginTop: 10,
     textAlign: 'center',
+  },
+
+  recentActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+
+  clearText: {
+    fontFamily: theme.fonts.medium,
+    fontSize: 11,
+    color: MAROON,
+    textDecorationLine: 'underline',
+  },
+
+  recentChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#EACDD1',
+    borderRadius: 20,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    marginRight: 8,
+    gap: 8,
+  },
+
+  recentTextArea: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+
+  removeButton: {
+    paddingLeft: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  chipText: {
+    fontFamily: theme.fonts.medium,
+    fontSize: 11,
+    color: MAROON,
   },
 });
