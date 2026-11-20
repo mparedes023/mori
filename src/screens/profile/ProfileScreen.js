@@ -1,9 +1,14 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { ScrollView, View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { theme } from '../../constants/theme';
 
 export default function ProfileScreen() {
   return (
-    <View style={styles.container}>
+      <ScrollView 
+      style={styles.screen} 
+      contentContainerStyle={styles.container}
+      showsVerticalScrollIndicator={false}
+    >
+
 
 
       <View style={styles.topRow}>
@@ -26,14 +31,71 @@ export default function ProfileScreen() {
         <Text style={styles.receiptSubHeader}>MEMBER SINCE: NOV 2026</Text> 
       
         <View style={styles.dashedLine} />
-      
+
+        <View style={styles.contentContainer}>
+          <Text style={styles.itemTitle}>ITEM</Text>
+          <Text style={styles.totalTitle}>TOTAL</Text>
+        </View>
+        <View style={styles.dashedLine} />
+
+        <View style={styles.receiptBox}>
+          <View style={styles.bookCategories}>
+            <Text style={styles.bookCategoryTitle}>BOOKS READ</Text>
+            <Text style={styles.bookCategoryTitle}>TO BE READ (TBR)</Text>
+            <Text style={styles.bookCategoryTitle}>CURRENTLY READING</Text>
+            <Text style={styles.bookCategoryTitle}>ULTIME FAVOURITES</Text>
+            <Text style={styles.bookCategoryTitle}>PAGES TURNED</Text>
+            <Text style={styles.bookCategoryTitle}>COULD NOT FINISH</Text>
+          </View>
+
+          <View style={styles.readingStats}>
+            <Text style={styles.readingStatNumber}>123</Text>
+            <Text style={styles.readingStatNumber}>124</Text>
+            <Text style={styles.readingStatNumber}>146</Text>
+            <Text style={styles.readingStatNumber}>123</Text>
+            <Text style={styles.readingStatNumber}>24</Text>
+            <Text style={styles.readingStatNumber}>14</Text>
+
+          </View>
+        </View>
       
       </View>
-    </View>
+    
+
+        </ScrollView>
   );
 }
 
 const styles=StyleSheet.create({
+  receiptBox:{
+    display:'flex',
+    flexDirection:'row',
+    justifyContent:'space-between',
+    paddingHorizontal:15,
+  },
+  bookCategoryTitle:{
+    fontSize:19,
+    lineHeight:45,
+    fontFamily:theme.fonts.bold,
+
+  },
+
+  readingStatNumber:{
+    fontSize:18,
+    lineHeight:45,
+    textAlign:'right',
+  },
+  contentContainer:{
+    display:'flex',
+    flexDirection:'row',
+    justifyContent:'space-between',
+    paddingHorizontal:10,
+    
+  },
+  itemTitle:{
+    fontFamily:theme.fonts.regular,
+
+  },
     dashedLine: {
     borderBottomWidth: 1,
     borderBottomColor: '#000',
@@ -71,7 +133,7 @@ fontSize:18,
 
   container:{
     backgroundColor:'#f59fd403',
-    padding:30,
+    padding:20,
   },
   topRow:{
     flexDirection: 'row',
@@ -91,8 +153,8 @@ justifyContent:'center',
 alignItems:'center',
   },
   userImage:{
-    width:'100',
-    height:'100',
+    width:150,
+    height:150,
     borderRadius: 50,
     marginTop:50,
     marginBottom: 5,
