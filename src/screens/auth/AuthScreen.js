@@ -1,14 +1,42 @@
-import { TextInput,StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { TextInput,StyleSheet, View, Text, TouchableOpacity,ActivityIndicator } from 'react-native';
 import { theme } from '../../constants/theme';
-
+import {useState, useEffect} from 'react';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../config/firebase';
 
 export default function AuthScreen({ navigation }) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
+  const handleSignIn = async () => {
+    if (!email.trim() || !password.trim()) {
+      setError('Please enter both your email and password.');
+      return;
+    }
+    setError('');
+    setLoading(true);
 
-// will add actual handleSignIn logic later
-    const handleSignIn = () => {
-        navigation.replace('Main');
-    };
+    try {
+      await signInWithEmailAndPassword(auth, email.trim(), password);
+      navigation.replace('Main');
+    } catch (err) {
+      if (
+        err.code === 'auth/invalid-credential' ||
+        err.code === 'auth/user-not-found' ||
+        err.code === 'auth/wrong-password'
+      ) {
+        setError('Invalid email or password.');
+      } else if (err.code === 'auth/invalid-email') {
+        setError('Please enter a valid email address.');
+      } else {
+        setError(err.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
     const handleAccountCreation = () => {
         navigation.replace('AccountCreation');
@@ -21,15 +49,35 @@ export default function AuthScreen({ navigation }) {
         <Text style={styles.authTitle}>SIGN IN</Text>
         <Text style={styles.authGreeting}>Welcome Back!</Text>
         <Text style={styles.authDescription}>To access your libraries, please sign in below.</Text>
-        <TextInput style={styles.textInput}
-            placeholder="Username"
-        ></TextInput>
+        <TextInput
+          style={styles.textInput}
+          placeholder="Email"
+          value={email}
+          onChangeText={(text) => {
+            setEmail(text);
+            if (error) setError('');
+          }}
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
         <TextInput style={styles.textInput}
             placeholder="Password"
+            value={password}
+            onChangeText={(text) => {
+              setPassword(text);
+              if (error) setError('');
+            }}
             secureTextEntry
         >
         </TextInput>
-        <TouchableOpacity style={styles.authButton}  onPress={handleSignIn}><Text style={styles.authButtonText}>LOGIN</Text></TouchableOpacity>
+        {error ? <Text style={styles.errorText}>{error}</Text> : null}
+        <TouchableOpacity style={styles.authButton}  onPress={handleSignIn}>
+          {loading ? (
+          <ActivityIndicator color="#f011a2" />
+          ) : (
+            <Text style={styles.authButtonText}>LOGIN</Text>
+          )}
+        </TouchableOpacity>
         <View style={styles.boxAuth}>
           <Text style={styles.footerText}>Don’t have an account? | </Text>
           <TouchableOpacity onPress={handleAccountCreation}>
@@ -42,6 +90,13 @@ export default function AuthScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  errorText: {
+    color: '#8B0000',
+    fontFamily: theme.fonts.bold,
+    fontSize: 13,
+    marginBottom: 15,
+    textAlign: 'center',
+  },
     background:{
     backgroundColor: '#C4AADC',
     },

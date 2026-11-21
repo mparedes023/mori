@@ -8,6 +8,7 @@ import AuthScreen from './src/screens/auth/AuthScreen';
 import TabNavigator from './src/navigation/TabNavigator';
 import BookDetailsScreen from './src/screens/search/BookDetailsScreen';
 import HomeScreen from './src/screens/home/HomeScreen';
+import { UserProvider } from './src/context/UserContext';
 import {
   useFonts,
   RobotoMono_400Regular,
@@ -26,6 +27,7 @@ export default function App() {
     return null;
   }
   return (
+  <UserProvider>
     <NavigationContainer>
 
       <SafeAreaView style={styles.safeArea}>
@@ -43,7 +45,9 @@ export default function App() {
           <MoriHeader />
         </View>
       </SafeAreaView>
+      
     </NavigationContainer>
+</UserProvider>    
   );
 }
 
