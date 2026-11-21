@@ -7,6 +7,7 @@ import AccountCreationScreen from './src/screens/auth/AccountCreationScreen';
 import AuthScreen from './src/screens/auth/AuthScreen';
 import TabNavigator from './src/navigation/TabNavigator';
 import BookDetailsScreen from './src/screens/search/BookDetailsScreen';
+import HomeScreen from './src/screens/home/HomeScreen';
 import {
   useFonts,
   RobotoMono_400Regular,
@@ -35,6 +36,7 @@ export default function App() {
           <Stack.Screen name="Main" component={TabNavigator} />
           <Stack.Screen name="AccountCreation" component={AccountCreationScreen} />
           <Stack.Screen name="BookDetails" component={BookDetailsScreen} />
+          <Stack.Screen name="Home" component={HomeScreen} />
 
         </Stack.Navigator>          
         <View style={styles.headerWrapper} pointerEvents="box-none">

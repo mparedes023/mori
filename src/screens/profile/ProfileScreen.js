@@ -1,7 +1,10 @@
 import { ScrollView, View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { theme } from '../../constants/theme';
 
-export default function ProfileScreen() {
+export default function ProfileScreen({navigation}) {
+    const goToLibraries = () => {
+        navigation.navigate('Home');
+    };
   return (
     
       <ScrollView 
@@ -64,7 +67,7 @@ export default function ProfileScreen() {
         <Text style={styles.currentRead}>CURRENTLY READING: THE LOST SYMBOL</Text>
         <View style={styles.dashedLine} />
         <View style={styles.viewContainer}>
-          <TouchableOpacity style={styles.viewLibrariesButton} ><Text style={styles.viewLibrariesText}>VIEW MY LIBRARIES →</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.viewLibrariesButton} onPress={goToLibraries}><Text style={styles.viewLibrariesText}>VIEW MY LIBRARIES →</Text></TouchableOpacity>
         </View>
       </View>
     
