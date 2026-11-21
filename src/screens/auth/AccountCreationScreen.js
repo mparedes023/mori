@@ -114,7 +114,13 @@ export default function AccountCreationScreen({navigation}){
 
         </TextInput>
         {error ? <Text style={styles.errorText}>{error}</Text> : null}
-        <TouchableOpacity style={styles.authButton}  onPress={handleAccountCreation}><Text style={styles.authButtonText}>CREATE ACCOUNT</Text></TouchableOpacity>
+        <TouchableOpacity style={styles.authButton}  onPress={handleAccountCreation}>
+          {loading ? (
+        <ActivityIndicator color="#f011a2" />
+        ) : (
+          <Text style={styles.authButtonText}>CREATE ACCOUNT</Text>
+        )}
+        </TouchableOpacity>
         <View style={styles.boxAuth}>
           <Text style={styles.footerText}>Already have an account? | </Text>
           <TouchableOpacity onPress={goToLogin}>

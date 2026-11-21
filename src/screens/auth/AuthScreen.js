@@ -71,7 +71,13 @@ export default function AuthScreen({ navigation }) {
         >
         </TextInput>
         {error ? <Text style={styles.errorText}>{error}</Text> : null}
-        <TouchableOpacity style={styles.authButton}  onPress={handleSignIn}><Text style={styles.authButtonText}>LOGIN</Text></TouchableOpacity>
+        <TouchableOpacity style={styles.authButton}  onPress={handleSignIn}>
+          {loading ? (
+          <ActivityIndicator color="#f011a2" />
+          ) : (
+            <Text style={styles.authButtonText}>LOGIN</Text>
+          )}
+        </TouchableOpacity>
         <View style={styles.boxAuth}>
           <Text style={styles.footerText}>Don’t have an account? | </Text>
           <TouchableOpacity onPress={handleAccountCreation}>
