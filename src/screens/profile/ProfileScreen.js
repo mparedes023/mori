@@ -1,14 +1,14 @@
 import { ScrollView, View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { theme } from '../../constants/theme';
 
-export default function ProfileScreen({navigation}) {
-    const goToLibraries = () => {
-        navigation.navigate('Home');
-    };
+export default function ProfileScreen({ navigation }) {
+  const goToLibraries = () => {
+    navigation.navigate('Home');
+  };
   return (
-    
-      <ScrollView 
-      style={styles.screen} 
+
+    <ScrollView
+      style={styles.screen}
       contentContainerStyle={styles.container}
       showsVerticalScrollIndicator={false}
     >
@@ -21,7 +21,7 @@ export default function ProfileScreen({navigation}) {
         </TouchableOpacity>
       </View>
       <View style={styles.userBox}>
-        <Image source={require('../../../assets/melody.jpg')} 
+        <Image source={require('../../../assets/melody.jpg')}
           style={styles.userImage} ></Image>
         <Text style={styles.username}>Elle</Text>
         <Text style={styles.description}>Tell the community a little about yourself! Share your interests, what you're reading, or your favorite book. Tap "Edit Profile" to make this space yours.</Text>
@@ -30,10 +30,10 @@ export default function ProfileScreen({navigation}) {
 
       {/* reading receipt portion */}
       <View style={styles.solidLine}>
-        <Text style ={styles.receiptHeaderTitle}>MORI ARCHIVE DEPARTMENT</Text>
-        <Text style ={styles.usernameReceipt}>@ELL3SMELLS</Text>
-        <Text style={styles.receiptSubHeader}>MEMBER SINCE: NOV 2026</Text> 
-      
+        <Text style={styles.receiptHeaderTitle}>MORI ARCHIVE DEPARTMENT</Text>
+        <Text style={styles.usernameReceipt}>@ELL3SMELLS</Text>
+        <Text style={styles.receiptSubHeader}>MEMBER SINCE: NOV 2026</Text>
+
         <View style={styles.dashedLine} />
 
         <View style={styles.contentContainer}>
@@ -70,13 +70,13 @@ export default function ProfileScreen({navigation}) {
           <TouchableOpacity style={styles.viewLibrariesButton} onPress={goToLibraries}><Text style={styles.viewLibrariesText}>VIEW MY LIBRARIES →</Text></TouchableOpacity>
         </View>
       </View>
-    
 
-        </ScrollView>
+
+    </ScrollView>
   );
 }
 
-const styles=StyleSheet.create({
+const styles = StyleSheet.create({
   viewContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
@@ -88,132 +88,135 @@ const styles=StyleSheet.create({
   },
   viewLibrariesText: {
     fontFamily: theme.fonts.bold,
-    fontSize:19,
+    fontSize: 19,
     textDecorationLine: 'underline',
   },
-  genre:{
-    paddingLeft:15,
-    paddingTop:15
+  genre: {
+    paddingLeft: 15,
+    paddingTop: 15
 
   },
-  currentRead:{
-    paddingLeft:15,
-    paddingVertical:15
+  currentRead: {
+    paddingLeft: 15,
+    paddingVertical: 15
 
   },
-  receiptBox:{
-    display:'flex',
-    backgroundColor:'rgba(198, 202, 207, 0.39)',
-    flexDirection:'row',
-    justifyContent:'space-between',
-    paddingHorizontal:15,
+  receiptBox: {
+    display: 'flex',
+    backgroundColor: 'rgba(198, 202, 207, 0.39)',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 15,
   },
-  bookCategoryTitle:{
-    fontSize:19,
-    lineHeight:45,
-    fontFamily:theme.fonts.bold,
+  bookCategoryTitle: {
+    fontSize: 19,
+    lineHeight: 45,
+    fontFamily: theme.fonts.bold,
 
   },
 
-  readingStatNumber:{
-    fontSize:23,
-    lineHeight:45,
-    textAlign:'right',
-    fontFamily:theme.fonts.bold,
+  readingStatNumber: {
+    fontSize: 23,
+    lineHeight: 45,
+    textAlign: 'right',
+    fontFamily: theme.fonts.bold,
 
   },
-  contentContainer:{
-    display:'flex',
-    flexDirection:'row',
-    justifyContent:'space-between',
-    paddingHorizontal:10,
-    
-  },
-  itemTitle:{
-    fontFamily:theme.fonts.regular,
+  contentContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
 
   },
-    dashedLine: {
+  itemTitle: {
+    fontFamily: theme.fonts.regular,
+
+  },
+  dashedLine: {
     borderBottomWidth: 1,
     borderBottomColor: '#000',
     borderStyle: 'dashed',
     width: '100%',
     marginVertical: 12,
   },
-  solidLine:{
-    marginTop:50,
-    borderStyle:'solid',
-    borderColor:'black',
-    borderWidth:1,
-    paddingTop:50,
-    paddingHorizontal:5,
-    backgroundColor:'rgba(220, 224, 228, 0.39)',
+  solidLine: {
+    marginTop: 50,
+    borderStyle: 'solid',
+    borderColor: 'black',
+    borderWidth: 1,
+    paddingTop: 50,
+    paddingHorizontal: 5,
+    backgroundColor: 'rgba(220, 224, 228, 0.39)',
 
   },
-    receiptHeaderTitle:{
-textAlign:'center',
-fontSize:18,
-    fontFamily:theme.fonts.bold,
+  receiptHeaderTitle: {
+    textAlign: 'center',
+    fontSize: 18,
+    fontFamily: theme.fonts.bold,
 
   },
-  usernameReceipt:{
-    textAlign:'center',
-    fontFamily:theme.fonts.regular,
-    marginTop:5,
+  usernameReceipt: {
+    textAlign: 'center',
+    fontFamily: theme.fonts.regular,
+    marginTop: 5,
 
 
 
   },
-  receiptSubHeader:{
-    textAlign:'center',
-    fontFamily:theme.fonts.regular,
-    marginTop:5,
+  receiptSubHeader: {
+    textAlign: 'center',
+    fontFamily: theme.fonts.regular,
+    marginTop: 5,
   },
 
-  container:{
-    backgroundColor:'#f59fd403',
-    padding:20,
+  container: {
+    backgroundColor: '#f59fd403',
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    paddingBottom: 120,
   },
-  topRow:{
+
+  topRow: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
     marginTop: 70,
 
   },
-  editProfileButton:{
-justifyContent:'flex-end',
+  editProfileButton: {
+    justifyContent: 'flex-end',
   },
-  editProfileText:{
-justifyContent:'flex-end',
+  editProfileText: {
+    justifyContent: 'flex-end',
 
   },
-  userBox:{
-justifyContent:'center',
-alignItems:'center',
+  userBox: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  userImage:{
-    width:150,
-    height:150,
+  userImage: {
+    width: 150,
+    height: 150,
     borderRadius: 50,
-    marginTop:50,
+    marginTop: 50,
     marginBottom: 5,
-    borderStyle:'solid',
-    borderWidth:2,
-    borderColor:'black',
+    borderStyle: 'solid',
+    borderWidth: 2,
+    borderColor: 'black',
   },
-  username:{
-    textTransform:'uppercase',
-    fontSize:24,
-    fontFamily:theme.fonts.bold,
+  username: {
+    textTransform: 'uppercase',
+    fontSize: 24,
+    fontFamily: theme.fonts.bold,
     marginBottom: 5,
   },
-  description:{
-    textAlign:'center',
-    fontFamily:theme.fonts.regular,
+  description: {
+    textAlign: 'center',
+    fontFamily: theme.fonts.regular,
 
   },
-  stars:{
-    marginTop:10,
+  stars: {
+    marginTop: 10,
   },
 
 });
