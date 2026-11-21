@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#C4AADC',
-    paddingHorizontal: 50,
+    paddingHorizontal: 40,
     height:'100%',
         paddingTop: 120, 
 
@@ -80,7 +80,7 @@ marginBottom:20,
   authButton:{
 
     backgroundColor: '#FFF7C9',
-    alignSelf: 'flex-end',
+    alignSelf: 'center',
     paddingVertical: 10,
     paddingHorizontal: 24,
     shadowColor: '#2b2b2b',
@@ -97,6 +97,9 @@ marginBottom:20,
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 30,
+      textAlign:'center',
+    alignItems: 'center',
+    justifyContent:'center',
   },
   footerText: {
     fontFamily: theme.fonts.regular,
@@ -104,8 +107,9 @@ marginBottom:20,
   },
   createAccountText: {
     fontFamily: theme.fonts.bold,
-    fontSize: 12,
+    fontSize: 16,
     textDecorationLine: 'underline',
+
   },
 
 });
