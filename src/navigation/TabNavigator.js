@@ -10,6 +10,7 @@ import {
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
 
 import HomeStackNavigator from './HomeStackNavigator';
@@ -30,8 +31,15 @@ const tabIcons = {
 };
 
 function GlassTabBar({ state, descriptors, navigation }) {
+
+  const insets = useSafeAreaInsets();
+
   return (
-    <View style={styles.tabBarContainer}>
+    <View style={[styles.tabBarContainer,
+    {
+      paddingBottom: insets.bottom + 10,
+    },
+    ]}>
       <View style={styles.glassBar}>
         <BlurView
           intensity={65}
@@ -41,8 +49,8 @@ function GlassTabBar({ state, descriptors, navigation }) {
 
         <LinearGradient
           colors={[
-            'rgba(255,255,255,0.65)',
-            'rgba(255,255,255,0.18)',
+            'rgba(255,255,255,0.30)',
+            'rgba(255,255,255,0.08)',
           ]}
           style={StyleSheet.absoluteFill}
         />
@@ -111,6 +119,9 @@ export default function TabNavigator() {
       tabBar={(props) => <GlassTabBar {...props} />}
       screenOptions={{
         headerShown: false,
+        sceneStyle: {
+          backgroundColor: '#F8F2EE',
+        }
       }}
     >
 
@@ -140,27 +151,23 @@ export default function TabNavigator() {
 
 const styles = StyleSheet.create({
   tabBarContainer: {
-    position: 'absolute',
-    bottom: Platform.OS === 'ios' ? 20 : 15,
-    left: 18,
-    right: 18,
-  },
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  right: 0,
+  paddingHorizontal: 18,
+  paddingTop: 8,
+  backgroundColor: 'transparent',
+  justifyContent: 'flex-end',
+},
 
   glassBar: {
     height: 72,
     borderRadius: 35,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.75)',
-    backgroundColor: 'rgba(255,255,255,0.25)',
-    shadowColor: '#572D35',
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
-    shadowOpacity: 0.13,
-    shadowRadius: 15,
-    elevation: 8,
+    borderColor: 'rgba(255,255,255,0.5)',
+    backgroundColor: 'rgba(255,255,255,0.08)',
   },
 
   tabsRow: {
