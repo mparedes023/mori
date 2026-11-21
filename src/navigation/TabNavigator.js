@@ -1,29 +1,119 @@
+import React from 'react';
+import {
+  View,
+  Text,
+  Pressable,
+  StyleSheet,
+  Platform,
+} from 'react-native';
+
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Feather } from '@expo/vector-icons';
 
 import HomeStackNavigator from './HomeStackNavigator';
 import SearchScreen from '../screens/search/SearchScreen';
 import MysteryMatchScreen from '../screens/home/MysteryMatchScreen';
-
 import ProfileScreen from '../screens/profile/ProfileScreen';
 
 const Tab = createBottomTabNavigator();
 
+const MAROON = '#572D35';
+const MUTED = '#977F87';
+
+const tabIcons = {
+  Home: 'home',
+  Search: 'search',
+  Mystery: 'help-circle',
+  Profile: 'user',
+};
+
+function GlassTabBar({ state, descriptors, navigation }) {
+  return (
+    <View style={styles.tabBarContainer}>
+      <View style={styles.glassBar}>
+        <BlurView
+          intensity={65}
+          tint="light"
+          style={StyleSheet.absoluteFill}
+        />
+
+        <LinearGradient
+          colors={[
+            'rgba(255,255,255,0.65)',
+            'rgba(255,255,255,0.18)',
+          ]}
+          style={StyleSheet.absoluteFill}
+        />
+
+        <View style={styles.tabsRow}>
+          {state.routes.map((route, index) => {
+            const isFocused = state.index === index;
+            const { options } = descriptors[route.key];
+
+            const label =
+              typeof options.tabBarLabel === 'string'
+                ? options.tabBarLabel
+                : route.name;
+
+            const onPress = () => {
+              const event = navigation.emit({
+                type: 'tabPress',
+                target: route.key,
+                canPreventDefault: true,
+              });
+
+              if (!isFocused && !event.defaultPrevented) {
+                navigation.navigate(route.name);
+              }
+            };
+
+            return (
+              <Pressable
+                key={route.key}
+                onPress={onPress}
+                accessibilityRole="tab"
+                accessibilityState={{
+                  selected: isFocused,
+                }}
+                style={[
+                  styles.tabButton,
+                  isFocused && styles.activeTab,
+                ]}
+              >
+                <Feather
+                  name={tabIcons[route.name] || 'circle'}
+                  size={21}
+                  color={isFocused ? MAROON : MUTED}
+                />
+
+                <Text
+                  style={[
+                    styles.tabLabel,
+                    isFocused && styles.activeLabel,
+                  ]}
+                >
+                  {label}
+                </Text>
+              </Pressable>
+            );
+          })}
+        </View>
+      </View>
+    </View>
+  );
+}
+
 export default function TabNavigator() {
   return (
     <Tab.Navigator
+      tabBar={(props) => <GlassTabBar {...props} />}
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#083b03',
-        tabBarInactiveTintColor: '#000000',
-        tabBarStyle: {
-          backgroundColor: '#ca85e3',
-          borderTopColor: '#000000',
-          height: 75,
-          paddingBottom: 15,
-          paddingTop: 10,
-        },
       }}
     >
+
       <Tab.Screen
         name="Home"
         component={HomeStackNavigator}
@@ -34,10 +124,8 @@ export default function TabNavigator() {
         component={SearchScreen}
       />
 
-
-
-        <Tab.Screen
-        name="Discover"
+      <Tab.Screen
+        name="Mystery"
         component={MysteryMatchScreen}
       />
 
@@ -49,3 +137,63 @@ export default function TabNavigator() {
     </Tab.Navigator>
   );
 }
+
+const styles = StyleSheet.create({
+  tabBarContainer: {
+    position: 'absolute',
+    bottom: Platform.OS === 'ios' ? 20 : 15,
+    left: 18,
+    right: 18,
+  },
+
+  glassBar: {
+    height: 72,
+    borderRadius: 35,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.75)',
+    backgroundColor: 'rgba(255,255,255,0.25)',
+    shadowColor: '#572D35',
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.13,
+    shadowRadius: 15,
+    elevation: 8,
+  },
+
+  tabsRow: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    paddingHorizontal: 7,
+  },
+
+  tabButton: {
+    flex: 1,
+    height: 57,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 27,
+    marginHorizontal: 3,
+    gap: 4,
+  },
+
+  activeTab: {
+    backgroundColor: 'rgba(234,205,209,0.75)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.85)',
+  },
+
+  tabLabel: {
+    fontSize: 10,
+    color: MUTED,
+  },
+
+  activeLabel: {
+    color: MAROON,
+    fontWeight: '700',
+  },
+});
